@@ -1,0 +1,62 @@
+{
+  "name": "terminal-tpv-api",
+  "version": "1.0.0",
+  "description": "API del Terminal Punto de Venta LA NENA, Propiedad de ISOTECH MÉXICO",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write .",
+    "lint:check": "eslint .",
+    "lint": "eslint . --fix",
+    "docker:db": "docker-compose up -d"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sentry/node": "7.14.2",
+    "@sentry/tracing": "7.14.2",
+    "base64-stream": "1.0.0",
+    "cors": "2.8.5",
+    "express": "4.18.1",
+    "jsonwebtoken": "8.5.1",
+    "jwt-decode": "3.1.2",
+    "lodash": "4.17.21",
+    "moment": "2.29.4",
+    "mongoose": "6.6.5",
+    "mongoose-paginate-v2": "1.7.1",
+    "morgan": "1.10.0",
+    "nodemailer": "6.8.0",
+    "pdfkit": "0.13.0",
+    "serve-favicon": "2.5.0"
+  },
+  "devDependencies": {
+    "eslint": "8.25.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "eslint-plugin-promise": "6.0.1",
+    "eslint-plugin-standard": "5.0.0",
+    "husky": "=8",
+    "lint-staged": ">=13.0.3",
+    "nodemon": "2.0.20",
+    "prettier": "2.7.1",
+    "standard": "17.0.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "./node_modules/standard/eslintrc.json"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
+  }
+}
