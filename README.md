@@ -43,6 +43,3 @@ Inicia el servidor en modo de escucha en el puerto que le sea asignado
 ## Autor ✒️
 
 * **José David Ayala Franco** - *Programación* - [David-Franco](https://github.com/DavidFranco3)
-
----
-⌨️ con ❤️ por [David-Franco](https://github.com/DavidFranco3) para ISOTECH 😊

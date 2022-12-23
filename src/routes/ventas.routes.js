@@ -267,10 +267,10 @@ router.get("/listarDetallesProductosVendidosDia", async (req, res) => {
 
 // Listar solo los productos vendidos en el día solicitado
 router.get("/listarDetallesProductosVendidosMes", async (req, res) => {
-    const { dia } = req.query;
+    const { mes } = req.query;
     //console.log(dia)
     await ventas
-        .find({ estado: "true", agrupar: dia })
+        .find({ estado: "true", agrupar: mes })
         .sort({ _id: -1 })
         .then((data) => {
             let dataTemp = []
