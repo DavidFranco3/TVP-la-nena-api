@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+// modelo de la coleccion ventas
 const ventas = new Schema({
   numeroTiquet: { type: String },
   cliente: { type: String },
@@ -17,8 +18,6 @@ const ventas = new Schema({
   iva: { type: String },
   comision: { type: String },
   agrupar: { type: String },
-  pdfAlmacenado: { type: String },
-  createDate: { type: Date }
 }, {
   timestamps: true
 });

@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const jwtDecode = require("jwt-decode");
 const categorias = require("../models/categorias");
 
 // Registro de categorias
@@ -21,21 +19,20 @@ router.post("/registro", async (req, res) => {
 // Obtener las categorias
 router.get("/listar", async (req, res) => {
     await categorias
-        .find()
+        .find({ estado: "true" })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
-// Listar paginando las categorias
-router.get("/listarPaginando", async (req, res) => {
+// Obtener las categorias con paginacion
+router.get("/listarPaginandoActivas", async (req, res) => {
     const { pagina, limite } = req.query;
-    //console.log("Pagina ", pagina , " Limite ", limite)
 
     const skip = (pagina - 1) * limite;
 
     await categorias
-        .find()
+        .find({ estado: "true" })
         .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
@@ -43,10 +40,35 @@ router.get("/listarPaginando", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Listar paginando las ventas
-router.get("/totalCategorias", async (_req, res) => {
+// Obtener el total de categorias
+router.get("/totalCategoriasActivas", async (_req, res) => {
     await categorias
-        .find()
+        .find({ estado: "true" })
+        .count()
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener las categorias con paginacion
+router.get("/listarPaginandoCanceladas", async (req, res) => {
+    const { pagina, limite } = req.query;
+
+    const skip = (pagina - 1) * limite;
+
+    await categorias
+        .find({ estado: "false" })
+        .sort({ _id: -1 })
+        .skip(skip)
+        .limit(limite)
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener el total de categorias
+router.get("/totalCategoriasCanceladas", async (_req, res) => {
+    await categorias
+        .find({ estado: "false" })
         .count()
         .sort({ _id: -1 })
         .then((data) => res.json(data))
@@ -68,6 +90,16 @@ router.delete("/eliminar/:id", async (req, res) => {
     await categorias
         .remove({ _id: id })
         .then((data) => res.status(200).json({ mensaje: "Categoría eliminada" }))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Cambiar el estado de una categoria
+router.put("/cancelar/:id", async (req, res) => {
+    const { id } = req.params;
+    const { estado } = req.body;
+    await categorias
+        .updateOne({ _id: id }, { $set: { estado } })
+        .then((data) => res.status(200).json({ mensaje: estado === "true" ? "Categoría habilitada" : "Categoría deshabilitada" }))
         .catch((error) => res.json({ message: error }));
 });
 

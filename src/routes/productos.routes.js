@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const jwtDecode = require("jwt-decode");
 const productos = require("../models/productos");
 
 // Registro de productos
@@ -27,15 +25,14 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Listar paginando los productos
-router.get("/listarPaginando", async (req, res) => {
+// Obtener los productos con paginacion
+router.get("/listarPaginandoActivos", async (req, res) => {
     const { pagina, limite } = req.query;
-    //console.log("Pagina ", pagina , " Limite ", limite)
 
     const skip = (pagina - 1) * limite;
 
     await productos
-        .find()
+        .find({ estado: "true" })
         .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
@@ -43,10 +40,34 @@ router.get("/listarPaginando", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Listar paginando las ventas
-router.get("/totalProductos", async (_req, res) => {
+// Obtener el total de los productos
+router.get("/totalProductosActivos", async (_req, res) => {
     await productos
-        .find()
+        .find({ estado: "true" })
+        .count()
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+router.get("/listarPaginandoCancelados", async (req, res) => {
+    const { pagina, limite } = req.query;
+
+    const skip = (pagina - 1) * limite;
+
+    await productos
+        .find({ estado: "false" })
+        .sort({ _id: -1 })
+        .skip(skip)
+        .limit(limite)
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener el total de los productos
+router.get("/totalProductosCancelados", async (_req, res) => {
+    await productos
+        .find({ estado: "false" })
         .count()
         .sort({ _id: -1 })
         .then((data) => res.json(data))
@@ -58,7 +79,7 @@ router.get("/listarFiltroCategoria", async (req, res) => {
     const { categoria } = req.query;
     // console.log(categoria)
     await productos
-        .find({ categoria })
+        .find({ estado: "true", categoria })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
@@ -79,6 +100,16 @@ router.delete("/eliminar/:id", async (req, res) => {
     await productos
         .remove({ _id: id })
         .then((data) => res.status(200).json({ mensaje: "Producto eliminado" }))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Cambiar el estado de un producto
+router.put("/cancelar/:id", async (req, res) => {
+    const { id } = req.params;
+    const { estado } = req.body;
+    await productos
+        .updateOne({ _id: id }, { $set: { estado } })
+        .then((data) => res.status(200).json({ mensaje: estado === "true" ? "Producto habilitado" : "Producto deshabilitado" }))
         .catch((error) => res.json({ message: error }));
 });
 

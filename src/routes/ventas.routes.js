@@ -26,7 +26,33 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Listar paginando las ventas
+// Obtener las ventas con paginacion
+router.get("/listarPaginandoActivas", async (req, res) => {
+    const { pagina, limite } = req.query;
+    //console.log("Pagina ", pagina , " Limite ", limite)
+
+    const skip = (pagina - 1) * limite;
+
+    await ventas
+        .find({ estado: "true" })
+        .sort({ _id: -1 })
+        .skip(skip)
+        .limit(limite)
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener el total de las ventas
+router.get("/totalVentasActivas", async (_req, res) => {
+    await ventas
+        .find({ estado: "true" })
+        .count()
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener las ventas con paginacion
 router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
@@ -42,7 +68,7 @@ router.get("/listarPaginando", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Listar paginando las ventas
+// Obtener el total de las ventas
 router.get("/totalVentas", async (_req, res) => {
     await ventas
         .find()
@@ -52,7 +78,33 @@ router.get("/totalVentas", async (_req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Listar paginando las ventas
+// Obtener las ventas con paginacion
+router.get("/listarPaginandoCanceladas", async (req, res) => {
+    const { pagina, limite } = req.query;
+    //console.log("Pagina ", pagina , " Limite ", limite)
+
+    const skip = (pagina - 1) * limite;
+
+    await ventas
+        .find({ estado: "false" })
+        .sort({ _id: -1 })
+        .skip(skip)
+        .limit(limite)
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener el total de las ventas
+router.get("/totalVentasCanceladas", async (_req, res) => {
+    await ventas
+        .find({ estado: "false" })
+        .count()
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obteenr las ventas con paginacion segun el dia
 router.get("/listarPaginandoDia", async (req, res) => {
     const { pagina, limite, dia } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
@@ -68,7 +120,7 @@ router.get("/listarPaginandoDia", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las ventas de un dia en especifico
+// Obtener los totales segun el dia
 router.get("/listarTotalVentasDia", async (req, res) => {
     const { dia } = req.query;
     await ventas
@@ -133,7 +185,7 @@ router.get("/listarTotalVentasDia", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las ventas de un dia en especifico
+// Obtener las ventas de un mes en especifico
 router.get("/listarTotalVentasMes", async (req, res) => {
     const { mes } = req.query;
     await ventas
@@ -198,7 +250,7 @@ router.get("/listarTotalVentasMes", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-//Obtener los detalles de las ventas del día
+//Obtener los detalles de las ventas del mes
 router.get("/listarDetallesVentasMes", async (req, res) => {
     const { dia } = req.query;
     //console.log(dia)
@@ -212,7 +264,7 @@ router.get("/listarDetallesVentasMes", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Listar paginando las ventas
+// Obtener las ventas con paginacion segun el mes
 router.get("/listarPaginandoMes", async (req, res) => {
     const { pagina, limite, mes } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
@@ -265,7 +317,7 @@ router.get("/listarDetallesProductosVendidosDia", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Listar solo los productos vendidos en el día solicitado
+// Listar solo los productos vendidos en el mes solicitado
 router.get("/listarDetallesProductosVendidosMes", async (req, res) => {
     const { mes } = req.query;
     //console.log(dia)
@@ -306,7 +358,7 @@ router.delete("/eliminar/:id", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Modificar datos, al momento de registrar nuevos productos
+// Cambiar el estado de una venta
 router.put("/cancelar/:id", async (req, res) => {
     const { id } = req.params;
     const { estado } = req.body;
@@ -316,16 +368,18 @@ router.put("/cancelar/:id", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-router.get("/obtenNoTiquet", async (req, res) => {
-    const ventasTotales = await ventas.findOne().sort({ _id: -1 });
-    // console.log(ventasTotales)
-
-    if (ventasTotales.numeroTiquet !== undefined) {
-        res.status(200).json({ noTiquet: ventasTotales.numeroTiquet })
+// Obtener el numero de la venta actual
+router.get("/obtenNoTiquet", async (_req, res) => {
+    const ventasTotales = await ventas.find().count();
+    if (ventasTotales === 0) {
+        res.status(200).json({ numeroTiquet: 1 });
     } else {
-        res.status(200).json({ noTiquet: "0" })
+        const [ultimaVenta] = await ventas.find({}).sort({ numeroTiquet: -1 }).limit(1);
+        const tempTiquet = parseInt(ultimaVenta.numeroTiquet) + 1;
+        res.status(200).json({ numeroTiquet: tempTiquet });
     }
 });
+
 
 module.exports = router;
 

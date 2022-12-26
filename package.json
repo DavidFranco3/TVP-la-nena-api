@@ -12,7 +12,7 @@
     "lint": "eslint . --fix",
     "docker:db": "docker-compose up -d"
   },
-  "author": "",
+  "author": "José David Ayala Franco",
   "license": "ISC",
   "dependencies": {
     "@sentry/node": "7.28.1",

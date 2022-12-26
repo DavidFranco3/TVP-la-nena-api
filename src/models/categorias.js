@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+// modelo de la coleccion categorias
 const categorias = new Schema({
   nombre: { type: String },
   negocio: { type: String },
   imagen: { type: String },
-  createDate: { type: Date }
+  estado: { type: String },
 }, {
   timestamps: true
 });

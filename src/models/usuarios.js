@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+// modelo de la coleccion usuarios
 const usuarios = new Schema({
     nombre: { type: String },
     apellidos: { type: String },
