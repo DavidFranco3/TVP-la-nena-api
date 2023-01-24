@@ -99,7 +99,7 @@ router.put("/cancelar/:id", async (req, res) => {
     const { estado } = req.body;
     await categorias
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: estado === "true" ? "Categoría habilitada" : "Categoría deshabilitada" }))
+        .then((data) => res.status(200).json({ mensaje: "Estado de la categoría actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 
