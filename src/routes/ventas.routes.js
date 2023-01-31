@@ -11,7 +11,7 @@ router.post("/registro", async (req, res) => {
         .then((data) =>
             res.status(200).json(
                 {
-                    mensaje: "Se ha registrado un nuevo tiquet de venta"
+                    mensaje: "Se ha registrado una nueva venta"
                 }
             ))
         .catch((error) => res.json({ message: error }));
