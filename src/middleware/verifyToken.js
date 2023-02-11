@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const jwtDecode = require("jwt-decode");
 
+// Para configurar el tiempo que la sesión estara activa
 const isExpired = (token) => {
   const { exp } = jwtDecode(token);
   const expire = exp * 1000;
@@ -9,6 +10,7 @@ const isExpired = (token) => {
   return timeout < 0;
 };
 
+// Para validar el token de inicio de sesión
 const verifyToken = (req, res, next) => {
   const { authorization } = req.headers;
 

@@ -1,3 +1,4 @@
+// Para obtener los errores
 module.exports = (error, _req, res, _next) => {
   console.error(error);
 

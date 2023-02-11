@@ -25,7 +25,7 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las categorias con paginacion
+// Obtener las categorias activas con paginacion
 router.get("/listarPaginandoActivas", async (req, res) => {
     const { pagina, limite } = req.query;
 
@@ -40,7 +40,7 @@ router.get("/listarPaginandoActivas", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener el total de categorias
+// Obtener el total de categorias activas
 router.get("/totalCategoriasActivas", async (_req, res) => {
     await categorias
         .find({ estado: "true" })
@@ -50,7 +50,7 @@ router.get("/totalCategoriasActivas", async (_req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las categorias con paginacion
+// Obtener las categorias canceladas con paginacion
 router.get("/listarPaginandoCanceladas", async (req, res) => {
     const { pagina, limite } = req.query;
 
@@ -65,7 +65,7 @@ router.get("/listarPaginandoCanceladas", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener el total de categorias
+// Obtener el total de categorias canceladas
 router.get("/totalCategoriasCanceladas", async (_req, res) => {
     await categorias
         .find({ estado: "false" })

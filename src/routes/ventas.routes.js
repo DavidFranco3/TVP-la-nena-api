@@ -26,7 +26,7 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las ventas con paginacion
+// Obtener las ventas activas con paginacion
 router.get("/listarPaginandoActivas", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
@@ -42,7 +42,7 @@ router.get("/listarPaginandoActivas", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener el total de las ventas
+// Obtener el total de las ventas activas
 router.get("/totalVentasActivas", async (_req, res) => {
     await ventas
         .find({ estado: "true" })
@@ -52,7 +52,7 @@ router.get("/totalVentasActivas", async (_req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las ventas con paginacion
+// Obtener las ventas canceladas
 router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
@@ -78,7 +78,7 @@ router.get("/totalVentas", async (_req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las ventas con paginacion
+// Obtener las ventas canceladas con paginacion
 router.get("/listarPaginandoCanceladas", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
@@ -94,7 +94,7 @@ router.get("/listarPaginandoCanceladas", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener el total de las ventas
+// Obtener el total de las ventas canceladas
 router.get("/totalVentasCanceladas", async (_req, res) => {
     await ventas
         .find({ estado: "false" })
@@ -104,7 +104,7 @@ router.get("/totalVentasCanceladas", async (_req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obteenr las ventas con paginacion segun el dia
+// Obtener las ventas con paginacion segun el dia
 router.get("/listarPaginandoDia", async (req, res) => {
     const { pagina, limite, dia } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
@@ -185,7 +185,7 @@ router.get("/listarTotalVentasDia", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las ventas de un mes en especifico
+// Obtener los totales segun el mes 
 router.get("/listarTotalVentasMes", async (req, res) => {
     const { mes } = req.query;
     await ventas

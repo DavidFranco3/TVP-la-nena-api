@@ -16,7 +16,7 @@ router.post("/registro", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las productos
+// Obtener los productos
 router.get("/listar", async (req, res) => {
     await productos
         .find()
@@ -25,7 +25,7 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener los productos con paginacion
+// Obtener los productos activos con paginacion
 router.get("/listarPaginandoActivos", async (req, res) => {
     const { pagina, limite } = req.query;
 
@@ -40,7 +40,7 @@ router.get("/listarPaginandoActivos", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener el total de los productos
+// Obtener el total de los productos activos
 router.get("/totalProductosActivos", async (_req, res) => {
     await productos
         .find({ estado: "true" })
@@ -50,6 +50,7 @@ router.get("/totalProductosActivos", async (_req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener los productos cancelados con paginación
 router.get("/listarPaginandoCancelados", async (req, res) => {
     const { pagina, limite } = req.query;
 
@@ -64,7 +65,7 @@ router.get("/listarPaginandoCancelados", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener el total de los productos
+// Obtener el total de los productos cancelados
 router.get("/totalProductosCancelados", async (_req, res) => {
     await productos
         .find({ estado: "false" })

@@ -69,13 +69,13 @@ router.delete("/eliminar/:id", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Deshabilitar el usuario
+// Cambiar estado del usuario
 router.put("/deshabilitar/:id", async (req, res) => {
     const { id } = req.params;
     const { estadoUsuario } = req.body;
     usuarios
         .updateOne({ _id: id }, { $set: { estadoUsuario } })
-        .then((data) => res.status(200).json({ status: "Usuario modificado" }))
+        .then((data) => res.status(200).json({ status: "Estado del usuario actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 
