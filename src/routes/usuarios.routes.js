@@ -34,6 +34,58 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener las ventas activas con paginacion
+router.get("/listarPaginandoActivos", async (req, res) => {
+    const { pagina, limite } = req.query;
+    //console.log("Pagina ", pagina , " Limite ", limite)
+
+    const skip = (pagina - 1) * limite;
+
+    await usuarios
+        .find({ estadoUsuario: "true" })
+        .sort({ _id: -1 })
+        .skip(skip)
+        .limit(limite)
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener el total de las ventas activas
+router.get("/totalUsuariosActivos", async (_req, res) => {
+    await usuarios
+        .find({ estadoUsuario: "true" })
+        .count()
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener las ventas canceladas con paginacion
+router.get("/listarPaginandoCancelados", async (req, res) => {
+    const { pagina, limite } = req.query;
+    //console.log("Pagina ", pagina , " Limite ", limite)
+
+    const skip = (pagina - 1) * limite;
+
+    await usuarios
+        .find({ estadoUsuario: "false" })
+        .sort({ _id: -1 })
+        .skip(skip)
+        .limit(limite)
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener el total de las ventas canceladas
+router.get("/totalUsuariosCancelados", async (_req, res) => {
+    await usuarios
+        .find({ estadoUsuario: "false" })
+        .count()
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Listar paginando los usuarios
 router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
@@ -65,7 +117,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
     usuarios
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ status: "Usuario eliminado" }))
+        .then((data) => res.status(200).json({ mensaje: "Usuario eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
@@ -75,17 +127,17 @@ router.put("/deshabilitar/:id", async (req, res) => {
     const { estadoUsuario } = req.body;
     usuarios
         .updateOne({ _id: id }, { $set: { estadoUsuario } })
-        .then((data) => res.status(200).json({ status: "Estado del usuario actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Estado del usuario actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 
 // Actualizar datos del usuario
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { nombre, apellidos, telefono, usuario, correo, password, estadoUsuario } = req.body;
+    const { nombre, usuario, password, admin } = req.body;
     await usuarios
-        .updateOne({ _id: id }, { $set: { nombre, apellidos, telefono, usuario, correo, password, direccion, estadoUsuario } })
-        .then((data) => res.status(200).json({ status: "Datos actualizados" }))
+        .updateOne({ _id: id }, { $set: { nombre, usuario, password, admin } })
+        .then((data) => res.status(200).json({ mensaje: "Datos del usuario actualizados" }))
         .catch((error) => res.json({ message: error }));
 });
 
