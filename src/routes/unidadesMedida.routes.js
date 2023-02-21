@@ -165,9 +165,9 @@ router.put("/deshabilitar/:id", async (req, res) => {
 // Actualizar datos de la sucurusal
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { nombre, tipo } = req.body;
+    const { nombre, abreviatura, tipo } = req.body;
     await unidadesMedida
-        .updateOne({ _id: id }, { $set: { nombre, tipo } })
+        .updateOne({ _id: id }, { $set: { nombre, abreviatura, tipo } })
         .then((data) => res.status(200).json({ mensaje: "Datos de la unidad de medida actualizados" }))
         .catch((error) => res.json({ message: error }));
 });
