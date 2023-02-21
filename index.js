@@ -76,6 +76,7 @@ app.use("/ventas/", verifyToken, require("./src/routes/ventas.routes"));
 app.use("/categorias/", verifyToken, require("./src/routes/categorias.routes"));
 app.use("/productos/", verifyToken, require("./src/routes/productos.routes"));
 app.use("/unidadesMedida/", verifyToken, require("./src/routes/unidadesMedida.routes"));
+app.use("/logs/", verifyToken, require("./src/routes/logSistema.routes"));
 
 app.use(notFound);
 app.use(Sentry.Handlers.errorHandler());
