@@ -117,9 +117,9 @@ router.put("/cancelar/:id", async (req, res) => {
 // Actualizar datos del producto
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { nombre, categoria, negocio, precio, imagen } = req.body;
+    const { nombre, categoria, negocio, ingredientes, costoProduccion, precio, imagen } = req.body;
     await productos
-        .updateOne({ _id: id }, { $set: { nombre, categoria, negocio, precio, imagen } })
+        .updateOne({ _id: id }, { $set: { nombre, categoria, negocio, costoProduccion, ingredientes, precio, imagen } })
         .then((data) => res.status(200).json({ mensaje: "Datos del producto actualizados" }))
         .catch((error) => res.json({ message: error }));
 });

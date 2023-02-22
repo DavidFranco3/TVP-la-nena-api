@@ -6,8 +6,10 @@ const productos = new Schema({
   nombre: { type: String },
   categoria: { type: String },
   negocio: { type: String },
+  costoProduccion: { type: String },
   precio: { type: String },
   imagen: { type: String },
+  ingredientes: { type: Array, default: [] },
   estado: { type: String },
 }, {
   timestamps: true
