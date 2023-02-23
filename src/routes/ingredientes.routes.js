@@ -106,9 +106,9 @@ router.put("/cancelar/:id", async (req, res) => {
 // Actualizar datos del ingrediente
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { nombre, umPrimaria, costoUMPrimaria, tipo, umSecundaria, cantidadPiezas, costoUMSecundaria, imagen } = req.body;
+    const { nombre, umPrimaria, costoAdquisicion, umAdquisicion, umProduccion, costoProduccion, cantidadPiezas, imagen } = req.body;
     await ingredientes
-        .updateOne({ _id: id }, { $set: { nombre, umPrimaria, costoUMPrimaria, tipo, umSecundaria, cantidadPiezas, costoUMSecundaria, imagen } })
+        .updateOne({ _id: id }, { $set: { nombre, umPrimaria, costoAdquisicion, umAdquisicion, umProduccion, costoProduccion, cantidadPiezas, imagen } })
         .then((data) => res.status(200).json({ mensaje: "Datos del ingrediente actualizados" }))
         .catch((error) => res.json({ message: error }));
 });
