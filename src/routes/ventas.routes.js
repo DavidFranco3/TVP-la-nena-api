@@ -120,6 +120,28 @@ router.get("/listarPaginandoDia", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener las ventas
+router.get("/listarVentasDia", async (req, res) => {
+    const { dia } = req.query;
+    
+    await ventas
+        .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T23:59:59.999Z') } })
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener las ventas
+router.get("/listarVentasMes", async (req, res) => {
+    const { mes } = req.query;
+    
+    await ventas
+        .find({ estado: "true", agrupar: mes})
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Obtener los totales segun el dia
 router.get("/listarTotalVentasDia", async (req, res) => {
     const { dia } = req.query;
