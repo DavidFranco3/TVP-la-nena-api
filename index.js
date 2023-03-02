@@ -79,6 +79,7 @@ app.use("/unidadesMedida/", verifyToken, require("./src/routes/unidadesMedida.ro
 app.use("/logs/", verifyToken, require("./src/routes/logSistema.routes"));
 app.use("/ingredientes/", verifyToken, require("./src/routes/ingredientes.routes"));
 app.use("/cajas/", verifyToken, require("./src/routes/cajas.routes"));
+app.use("/movimientosCajas/", verifyToken, require("./src/routes/movimientosCajas.routes"));
 
 app.use(notFound);
 app.use(Sentry.Handlers.errorHandler());
