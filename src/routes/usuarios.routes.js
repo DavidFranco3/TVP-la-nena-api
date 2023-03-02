@@ -34,6 +34,15 @@ router.get("/listar", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener todos los usuarios colaboradores
+router.get("/listarCajeros", async (req, res) => {
+    usuarios
+        .find({admin: "false"})
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Obtener las ventas activas con paginacion
 router.get("/listarPaginandoActivos", async (req, res) => {
     const { pagina, limite } = req.query;
