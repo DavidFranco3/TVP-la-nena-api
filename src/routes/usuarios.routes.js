@@ -37,7 +37,7 @@ router.get("/listar", async (req, res) => {
 // Obtener todos los usuarios colaboradores
 router.get("/listarCajeros", async (req, res) => {
     usuarios
-        .find({admin: "false"})
+        .find({ admin: "false", estadoUsuario: "true" })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
