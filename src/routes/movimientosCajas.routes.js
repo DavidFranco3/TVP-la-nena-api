@@ -27,12 +27,14 @@ router.get("/listar", async (req, res) => {
 
 // Obtener las cajas activas con paginacion
 router.get("/listarPaginando", async (req, res) => {
-    const { pagina, limite } = req.query;
+    const { pagina, limite, idCaja } = req.query;
+
+    console.log(idCaja);
 
     const skip = (pagina - 1) * limite;
 
     await movimientosCajas
-        .find()
+        .find({ idCaja })
         .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
@@ -41,9 +43,11 @@ router.get("/listarPaginando", async (req, res) => {
 });
 
 // Obtener el total de cajas activas
-router.get("/totalMovimientos", async (_req, res) => {
+router.get("/totalMovimientos", async (req, res) => {
+    const { idCaja } = req.query;
+
     await movimientosCajas
-        .find()
+        .find({ idCaja })
         .count()
         .sort({ _id: -1 })
         .then((data) => res.json(data))
