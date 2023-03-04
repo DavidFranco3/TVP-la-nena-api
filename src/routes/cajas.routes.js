@@ -109,6 +109,18 @@ router.get("/obtener/:id", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener una caja en especifico
+router.get("/obtenerUltimaCajaCajero/:idCajero", async (req, res) => {
+    const { idCajero } = req.params;
+    console.log(idCajero)
+    await cajas
+        .find({ idCajero: idCajero })
+        .sort({ $natural: -1 })
+        .limit(1)
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Borrar una caja
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
