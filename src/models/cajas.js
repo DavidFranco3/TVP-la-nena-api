@@ -5,6 +5,7 @@ const { Schema } = mongoose;
 const cajas = new Schema({
     idCajero: { type: String },
     cajero: { type: String },
+    estado: { type: String },
     saldo: { type: String }
 }, {
     timestamps: true

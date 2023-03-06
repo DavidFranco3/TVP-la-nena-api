@@ -136,7 +136,7 @@ router.put("/cancelar/:id", async (req, res) => {
     const { estado } = req.body;
     await cajas
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado de la caja actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "La caja fue cerrada exitosamente" }))
         .catch((error) => res.json({ message: error }));
 });
 
