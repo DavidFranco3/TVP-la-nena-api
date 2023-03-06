@@ -18,8 +18,10 @@ router.post("/registro", async (req, res) => {
 
 // Obtener los movimientos de cajas
 router.get("/listar", async (req, res) => {
+    const { idCaja } = req.query;
+    
     await movimientosCajas
-        .find({ estado: "true" })
+        .find({ estado: "true",  idCaja})
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
@@ -28,8 +30,6 @@ router.get("/listar", async (req, res) => {
 // Obtener las cajas activas con paginacion
 router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite, idCaja } = req.query;
-
-    console.log(idCaja);
 
     const skip = (pagina - 1) * limite;
 
