@@ -1,39 +1,39 @@
 const express = require("express");
 const router = express.Router();
-const ventas = require("../models/ventas");
+const pedidosClientes = require("../models/pedidosClientes");
 const { map } = require("lodash");
 
-// Registro de ventas
+// Registro de pedido
 router.post("/registro", async (req, res) => {
-    const datoVentas = ventas(req.body);
-    await datoVentas
+    const datoPedido = pedidosClientes(req.body);
+    await datoPedido
         .save()
         .then((data) =>
             res.status(200).json(
                 {
-                    mensaje: "Se ha registrado una nueva venta", datos: data
+                    mensaje: "Se ha registrado un nuevo pedido", datos: data
                 }
             ))
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las ventas
+// Obtener los pedidos
 router.get("/listar", async (req, res) => {
-    await ventas
+    await pedidosClientes
         .find()
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las ventas activas con paginacion
+// Obtener los pedidos activas con paginacion
 router.get("/listarPaginandoActivas", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
     const skip = (pagina - 1) * limite;
 
-    await ventas
+    await pedidosClientes
         .find({ estado: "true" })
         .sort({ _id: -1 })
         .skip(skip)
@@ -42,9 +42,9 @@ router.get("/listarPaginandoActivas", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener el total de las ventas activas
-router.get("/totalVentasActivas", async (_req, res) => {
-    await ventas
+// Obtener el total de los pedidos activas
+router.get("/totalPedidosActivas", async (_req, res) => {
+    await pedidosClientes
         .find({ estado: "true" })
         .count()
         .sort({ _id: -1 })
@@ -52,14 +52,14 @@ router.get("/totalVentasActivas", async (_req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las ventas canceladas
+// Obtener los pedidos canceladas
 router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
     const skip = (pagina - 1) * limite;
 
-    await ventas
+    await pedidosClientes
         .find()
         .sort({ _id: -1 })
         .skip(skip)
@@ -68,9 +68,9 @@ router.get("/listarPaginando", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener el total de las ventas
-router.get("/totalVentas", async (_req, res) => {
-    await ventas
+// Obtener el total de los pedidos
+router.get("/totalPedidos", async (_req, res) => {
+    await pedidosClientes
         .find()
         .count()
         .sort({ _id: -1 })
@@ -78,14 +78,14 @@ router.get("/totalVentas", async (_req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las ventas canceladas con paginacion
+// Obtener los pedidos canceladas con paginacion
 router.get("/listarPaginandoCanceladas", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
     const skip = (pagina - 1) * limite;
 
-    await ventas
+    await pedidosClientes
         .find({ estado: "false" })
         .sort({ _id: -1 })
         .skip(skip)
@@ -94,9 +94,9 @@ router.get("/listarPaginandoCanceladas", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener el total de las ventas canceladas
-router.get("/totalVentasCanceladas", async (_req, res) => {
-    await ventas
+// Obtener el total de los pedidos canceladas
+router.get("/totalPedidosCanceladas", async (_req, res) => {
+    await pedidosClientes
         .find({ estado: "false" })
         .count()
         .sort({ _id: -1 })
@@ -104,14 +104,14 @@ router.get("/totalVentasCanceladas", async (_req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las ventas con paginacion segun el dia
+// Obtener los pedidos con paginacion segun el dia
 router.get("/listarPaginandoDia", async (req, res) => {
     const { pagina, limite, dia } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
     const skip = (pagina - 1) * limite;
 
-    await ventas
+    await pedidosClientes
         .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T23:59:59.999Z') } })
         .sort({ _id: -1 })
         .skip(skip)
@@ -120,32 +120,32 @@ router.get("/listarPaginandoDia", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las ventas
-router.get("/listarVentasDia", async (req, res) => {
+// Obtener los pedidos
+router.get("/listarPedidosDia", async (req, res) => {
     const { dia } = req.query;
-    
-    await ventas
+
+    await pedidosClientes
         .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T23:59:59.999Z') } })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las ventas
-router.get("/listarVentasMes", async (req, res) => {
+// Obtener los pedidos
+router.get("/listarPedidosMes", async (req, res) => {
     const { mes } = req.query;
-    
-    await ventas
-        .find({ estado: "true", agrupar: mes})
+
+    await pedidosClientes
+        .find({ estado: "true", agrupar: mes })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
 // Obtener los totales segun el dia
-router.get("/listarTotalVentasDia", async (req, res) => {
+router.get("/listarTotalPedidosDia", async (req, res) => {
     const { dia } = req.query;
-    await ventas
+    await pedidosClientes
         .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T23:59:59.999Z') } })
         .sort({ _id: -1 })
         .then((data) => {
@@ -183,19 +183,19 @@ router.get("/listarTotalVentasDia", async (req, res) => {
                     }
                 })
 
-                // Sumatoria de ventas realizadas con efectivo
+                // Sumatoria de pedidos realizadas con efectivo
                 if (totales.tipoPago === "Efectivo") {
                     efectivo += parseFloat(totales.total);
                     // console.log(totales.total)
                 }
 
-                // Sumatoria de ventas realizadas con tarjeta
+                // Sumatoria de pedidos realizadas con tarjeta
                 if (totales.tipoPago === "Tarjeta") {
                     tarjeta += parseFloat(totales.total);
                     // console.log(totales.total)
                 }
 
-                // Sumatoria de ventas realizadas con transferencia
+                // Sumatoria de pedidos realizadas con transferencia
                 if (totales.tipoPago === "Transferencia") {
                     transferencia += parseFloat(totales.total);
                     // console.log(totales.total)
@@ -208,9 +208,9 @@ router.get("/listarTotalVentasDia", async (req, res) => {
 });
 
 // Obtener los totales segun el mes 
-router.get("/listarTotalVentasMes", async (req, res) => {
+router.get("/listarTotalPedidosMes", async (req, res) => {
     const { mes } = req.query;
-    await ventas
+    await pedidosClientes
         .find({ estado: "true", agrupar: mes })
         .sort({ _id: -1 })
         .then((data) => {
@@ -248,19 +248,19 @@ router.get("/listarTotalVentasMes", async (req, res) => {
                     }
                 })
 
-                // Sumatoria de ventas realizadas con efectivo
+                // Sumatoria de pedidos realizadas con efectivo
                 if (totales.tipoPago === "Efectivo") {
                     efectivo += parseFloat(totales.total);
                     // console.log(totales.total)
                 }
 
-                // Sumatoria de ventas realizadas con tarjeta
+                // Sumatoria de pedidos realizadas con tarjeta
                 if (totales.tipoPago === "Tarjeta") {
                     tarjeta += parseFloat(totales.total);
                     // console.log(totales.total)
                 }
 
-                // Sumatoria de ventas realizadas con transferencia
+                // Sumatoria de pedidos realizadas con transferencia
                 if (totales.tipoPago === "Transferencia") {
                     transferencia += parseFloat(totales.total);
                     // console.log(totales.total)
@@ -272,11 +272,11 @@ router.get("/listarTotalVentasMes", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-//Obtener los detalles de las ventas del mes
-router.get("/listarDetallesVentasMes", async (req, res) => {
+//Obtener los detalles de los pedidos del mes
+router.get("/listarDetallesPedidosMes", async (req, res) => {
     const { dia } = req.query;
     //console.log(dia)
-    await ventas
+    await pedidosClientes
         .find({ estado: "true", agrupar: dia })
         .count()
         .sort({ _id: -1 })
@@ -286,14 +286,14 @@ router.get("/listarDetallesVentasMes", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las ventas con paginacion segun el mes
+// Obtener los pedidos con paginacion segun el mes
 router.get("/listarPaginandoMes", async (req, res) => {
     const { pagina, limite, mes } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
     const skip = (pagina - 1) * limite;
 
-    await ventas
+    await pedidosClientes
         .find({ estado: "true", agrupar: mes })
         .sort({ _id: -1 })
         .skip(skip)
@@ -302,11 +302,11 @@ router.get("/listarPaginandoMes", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-//Obtener los detalles de las ventas del día
-router.get("/listarDetallesVentasDia", async (req, res) => {
+//Obtener los detalles de los pedidos del día
+router.get("/listarDetallesPedidosDia", async (req, res) => {
     const { dia } = req.query;
     //console.log(dia)
-    await ventas
+    await pedidosClientes
         .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T23:59:59.999Z') } })
         .count()
         .sort({ _id: -1 })
@@ -317,10 +317,10 @@ router.get("/listarDetallesVentasDia", async (req, res) => {
 });
 
 // Listar solo los productos vendidos en el día solicitado
-router.get("/listarDetallesProductosVendidosDia", async (req, res) => {
+router.get("/listarDetallesProductosPedidosDia", async (req, res) => {
     const { dia } = req.query;
     //console.log(dia)
-    await ventas
+    await pedidosClientes
         .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T23:59:59.999Z') } })
         .sort({ _id: -1 })
         .then((data) => {
@@ -330,7 +330,7 @@ router.get("/listarDetallesProductosVendidosDia", async (req, res) => {
 
                 map(datos.productos, (producto, index) => {
                     const { nombre, precio } = producto;
-                    dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Venta completada" : "Venta cancelada", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago, totalVenta: data[indexPrincipal].total })
+                    dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Pedido completado" : "Pedido cancelado", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago, totalVenta: data[indexPrincipal].total })
                 })
 
             })
@@ -340,10 +340,10 @@ router.get("/listarDetallesProductosVendidosDia", async (req, res) => {
 });
 
 // Listar solo los productos vendidos en el mes solicitado
-router.get("/listarDetallesProductosVendidosMes", async (req, res) => {
+router.get("/listarDetallesProductosPedidosMes", async (req, res) => {
     const { mes } = req.query;
     //console.log(dia)
-    await ventas
+    await pedidosClientes
         .find({ estado: "true", agrupar: mes })
         .sort({ _id: -1 })
         .then((data) => {
@@ -353,7 +353,7 @@ router.get("/listarDetallesProductosVendidosMes", async (req, res) => {
 
                 map(datos.productos, (producto, index) => {
                     const { nombre, precio } = producto;
-                    dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Venta completada" : "Venta cancelada", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago, totalVenta: data[indexPrincipal].total })
+                    dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Pedido completado" : "Pedido cancelado", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago, totalVenta: data[indexPrincipal].total })
                 })
 
             })
@@ -362,45 +362,45 @@ router.get("/listarDetallesProductosVendidosMes", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener una venta en especifico
+// Obtener un pedido en especifico
 router.get("/obtener/:id", async (req, res) => {
     const { id } = req.params;
-    await ventas
+    await pedidosClientes
         .findById(id)
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
-// Borrar una venta
+// Borrar un pedido
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
-    await ventas
+    await pedidosClientes
         .remove({ _id: id })
-        .then((data) => res.status(200).json({ mensaje: "Venta eliminada" }))
+        .then((data) => res.status(200).json({ mensaje: "Pedido eliminado" }))
         .catch((error) => res.json({ message: error }));
 });
 
-// Cambiar el estado de una venta
+// Cambiar el estado de un pedido
 router.put("/cancelar/:id", async (req, res) => {
     const { id } = req.params;
     const { estado } = req.body;
-    await ventas
+    await pedidosClientes
         .updateOne({ _id: id }, { $set: { estado } })
-        .then((data) => res.status(200).json({ mensaje: "Estado de la venta actualizado" }))
+        .then((data) => res.status(200).json({ mensaje: "Estado del pedido actualizado" }))
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener el numero de la venta actual
+// Obtener el numero de la pedido actual
 router.get("/obtenNoTiquet", async (req, res) => {
-    const registroVentas = await ventas.find().count();
-    if (registroVentas === 0) {
+    const registroPedidos = await pedidosClientes.find().count();
+    if (registroPedidos === 0) {
         res.status(200).json({ noTiquet: 1 });
     } else {
-        const [ultimaVenta] = await ventas
+        const [ultimoPedido] = await pedidosClientes
             .find({})
             .sort({ numeroTiquet: -1 })
             .limit(1);
-        const tempTiquet = parseInt(ultimaVenta.numeroTiquet) + 1;
+        const tempTiquet = parseInt(ultimoPedido.numeroTiquet) + 1;
         res.status(200).json({ noTiquet: tempTiquet });
     }
 });

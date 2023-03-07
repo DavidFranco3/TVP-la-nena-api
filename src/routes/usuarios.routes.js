@@ -37,7 +37,16 @@ router.get("/listar", async (req, res) => {
 // Obtener todos los usuarios colaboradores
 router.get("/listarCajeros", async (req, res) => {
     usuarios
-        .find({ admin: "false", estadoUsuario: "true" })
+        .find({ tipo: "interno", admin: "false", estadoUsuario: "true" })
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener todos los usuarios colaboradores
+router.get("/listarClientes", async (req, res) => {
+    usuarios
+        .find({ tipo: "externo", estadoUsuario: "true" })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
@@ -144,10 +153,18 @@ router.put("/deshabilitar/:id", async (req, res) => {
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
     const { nombre, usuario, password, admin } = req.body;
-    await usuarios
-        .updateOne({ _id: id }, { $set: { nombre, usuario, password, admin } })
-        .then((data) => res.status(200).json({ mensaje: "Datos del usuario actualizados" }))
-        .catch((error) => res.json({ message: error }));
+
+     // Inicia validacion para no registrar usuarios con el mismo correo electronico
+     const busqueda = await usuarios.findOne({ usuario });
+     
+    if (busqueda && busqueda.usuario === usuario && busqueda._id != id) {
+        return res.status(401).json({ mensaje: "Usuario ya registrado" });
+    } else {
+        await usuarios
+            .updateOne({ _id: id }, { $set: { nombre, usuario, password, admin } })
+            .then((data) => res.status(200).json({ mensaje: "Datos del usuario actualizados" }))
+            .catch((error) => res.json({ message: error }));
+    }
 });
 
 module.exports = router;
