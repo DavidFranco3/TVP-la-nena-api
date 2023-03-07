@@ -75,7 +75,6 @@ app.use("/usuarios/", verifyToken, require("./src/routes/usuarios.routes"));
 app.use("/ventas/", verifyToken, require("./src/routes/ventas.routes"));
 app.use("/categorias/", verifyToken, require("./src/routes/categorias.routes"));
 app.use("/productos/", verifyToken, require("./src/routes/productos.routes"));
-app.use("/unidadesMedida/", verifyToken, require("./src/routes/unidadesMedida.routes"));
 app.use("/logs/", verifyToken, require("./src/routes/logSistema.routes"));
 app.use("/ingredientes/", verifyToken, require("./src/routes/ingredientes.routes"));
 app.use("/cajas/", verifyToken, require("./src/routes/cajas.routes"));
