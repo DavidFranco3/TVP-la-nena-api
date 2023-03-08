@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const pedidosClientes = new Schema({
   numeroTiquet: { type: String },
   cliente: { type: String },
-  usuario: {type: String},
+  usuario: { type: String },
   productos: { type: Array, default: [] },
   estado: { type: String },
   detalles: { type: String },
@@ -19,6 +19,7 @@ const pedidosClientes = new Schema({
   iva: { type: String },
   comision: { type: String },
   agrupar: { type: String },
+  direccion: { type: String },
 }, {
   timestamps: true
 });
