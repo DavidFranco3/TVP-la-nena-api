@@ -11,7 +11,7 @@ router.post("/registro", async (req, res) => {
         .then((data) =>
             res.status(200).json(
                 {
-                    mensaje: "Se ha registrado un nuevo pedido", datos: data
+                    mensaje: "Se ha registrado tu pedido, para confirmarlo debes enviar un mensaje de whatsapp al local usando el boton que aparece en la tabla", datos: data
                 }
             ))
         .catch((error) => res.json({ message: error }));
@@ -60,7 +60,7 @@ router.get("/listarPaginandoClientes", async (req, res) => {
     const skip = (pagina - 1) * limite;
 
     await pedidosClientes
-        .find({ usuario, estado: "true" })
+        .find({ usuario })
         .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
@@ -72,7 +72,7 @@ router.get("/listarPaginandoClientes", async (req, res) => {
 router.get("/totalPedidosClientes", async (req, res) => {
     const { usuario } = req.query;
     await pedidosClientes
-        .find({ usuario, estado: "true" })
+        .find({ usuario })
         .count()
         .sort({ _id: -1 })
         .then((data) => res.json(data))
