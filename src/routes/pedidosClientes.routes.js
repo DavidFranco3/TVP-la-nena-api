@@ -52,6 +52,33 @@ router.get("/totalPedidosActivas", async (_req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener los pedidos activas con paginacion
+router.get("/listarPaginandoClientes", async (req, res) => {
+    const { usuario, pagina, limite } = req.query;
+    //console.log("Pagina ", pagina , " Limite ", limite)
+
+    const skip = (pagina - 1) * limite;
+
+    await pedidosClientes
+        .find({ usuario, estado: "true" })
+        .sort({ _id: -1 })
+        .skip(skip)
+        .limit(limite)
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener el total de los pedidos activas
+router.get("/totalPedidosClientes", async (req, res) => {
+    const { usuario } = req.query;
+    await pedidosClientes
+        .find({ usuario, estado: "true" })
+        .count()
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Obtener los pedidos canceladas
 router.get("/listarPaginando", async (req, res) => {
     const { pagina, limite } = req.query;

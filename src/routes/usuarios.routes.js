@@ -25,6 +25,29 @@ router.post("/registro", async (req, res) => {
     }
 });
 
+// Registro de administradores
+router.post("/registroCliente", async (req, res) => {
+    const { usuario } = req.body;
+
+    // Inicia validacion para no registrar usuarios con el mismo correo electronico
+    const busqueda = await usuarios.findOne({ usuario });
+
+    if (busqueda && busqueda.usuario === usuario) {
+        return res.status(401).json({ mensaje: "Usuario ya registrado" });
+    } else {
+        const usuarioRegistrar = usuarios(req.body);
+        await usuarioRegistrar
+            .save()
+            .then((data) =>
+                res.status(200).json(
+                    {
+                        mensaje: "Registro exitoso del usuario", datos: data
+                    }
+                ))
+            .catch((error) => res.json({ message: error }));
+    }
+});
+
 // Obtener todos los usuarios colaboradores
 router.get("/listar", async (req, res) => {
     usuarios
@@ -60,7 +83,7 @@ router.get("/listarPaginandoActivos", async (req, res) => {
     const skip = (pagina - 1) * limite;
 
     await usuarios
-        .find({ estadoUsuario: "true" })
+        .find({ tipo: "interno", estadoUsuario: "true" })
         .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
@@ -71,7 +94,33 @@ router.get("/listarPaginandoActivos", async (req, res) => {
 // Obtener el total de las ventas activas
 router.get("/totalUsuariosActivos", async (_req, res) => {
     await usuarios
-        .find({ estadoUsuario: "true" })
+        .find({ tipo: "interno", estadoUsuario: "true" })
+        .count()
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener las ventas activas con paginacion
+router.get("/listarPaginandoClientes", async (req, res) => {
+    const { pagina, limite } = req.query;
+    //console.log("Pagina ", pagina , " Limite ", limite)
+
+    const skip = (pagina - 1) * limite;
+
+    await usuarios
+        .find({ tipo: "externo" })
+        .sort({ _id: -1 })
+        .skip(skip)
+        .limit(limite)
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener el total de las ventas activas
+router.get("/totalClientes", async (_req, res) => {
+    await usuarios
+        .find({ tipo: "externo" })
         .count()
         .sort({ _id: -1 })
         .then((data) => res.json(data))
@@ -86,7 +135,7 @@ router.get("/listarPaginandoCancelados", async (req, res) => {
     const skip = (pagina - 1) * limite;
 
     await usuarios
-        .find({ estadoUsuario: "false" })
+        .find({ tipo: "interno", estadoUsuario: "false" })
         .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
@@ -97,7 +146,7 @@ router.get("/listarPaginandoCancelados", async (req, res) => {
 // Obtener el total de las ventas canceladas
 router.get("/totalUsuariosCancelados", async (_req, res) => {
     await usuarios
-        .find({ estadoUsuario: "false" })
+        .find({ tipo: "interno", estadoUsuario: "false" })
         .count()
         .sort({ _id: -1 })
         .then((data) => res.json(data))

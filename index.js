@@ -72,6 +72,7 @@ app.use(cors());
 // Routes
 app.use(require("./src/routes/login.routes"));
 app.use("/usuarios/", verifyToken, require("./src/routes/usuarios.routes"));
+app.use("/clientes/", require("./src/routes/usuarios.routes"));
 app.use("/ventas/", verifyToken, require("./src/routes/ventas.routes"));
 app.use("/pedidos/", verifyToken, require("./src/routes/pedidosClientes.routes"));
 app.use("/categorias/", verifyToken, require("./src/routes/categorias.routes"));
