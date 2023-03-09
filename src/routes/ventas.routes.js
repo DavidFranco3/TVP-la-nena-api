@@ -27,6 +27,60 @@ router.get("/listar", async (req, res) => {
 });
 
 // Obtener las ventas activas con paginacion
+router.get("/listarPaginandoCajerosActivas", async (req, res) => {
+    const { pagina, limite, usuario } = req.query;
+    //console.log("Pagina ", pagina , " Limite ", limite)
+
+    const skip = (pagina - 1) * limite;
+
+    await ventas
+        .find({ usuario, estado: "true" })
+        .sort({ _id: -1 })
+        .skip(skip)
+        .limit(limite)
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener el total de las ventas activas
+router.get("/totalVentasCajerosActivas", async (req, res) => {
+    const { usuario } = req.query;
+    await ventas
+        .find({ usuario, estado: "true" })
+        .count()
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener las ventas canceladas con paginacion
+router.get("/listarPaginandoCajerosCanceladas", async (req, res) => {
+    const { pagina, limite, usuario } = req.query;
+    //console.log("Pagina ", pagina , " Limite ", limite)
+
+    const skip = (pagina - 1) * limite;
+
+    await ventas
+        .find({ usuario, estado: "false" })
+        .sort({ _id: -1 })
+        .skip(skip)
+        .limit(limite)
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener el total de las ventas canceladas
+router.get("/totalVentasCajerosCanceladas", async (req, res) => {
+    const { usuario } = req.query;
+    await ventas
+        .find({ usuario, estado: "false" })
+        .count()
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener las ventas activas con paginacion
 router.get("/listarPaginandoActivas", async (req, res) => {
     const { pagina, limite } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
@@ -46,32 +100,6 @@ router.get("/listarPaginandoActivas", async (req, res) => {
 router.get("/totalVentasActivas", async (_req, res) => {
     await ventas
         .find({ estado: "true" })
-        .count()
-        .sort({ _id: -1 })
-        .then((data) => res.json(data))
-        .catch((error) => res.json({ message: error }));
-});
-
-// Obtener las ventas canceladas
-router.get("/listarPaginando", async (req, res) => {
-    const { pagina, limite } = req.query;
-    //console.log("Pagina ", pagina , " Limite ", limite)
-
-    const skip = (pagina - 1) * limite;
-
-    await ventas
-        .find()
-        .sort({ _id: -1 })
-        .skip(skip)
-        .limit(limite)
-        .then((data) => res.json(data))
-        .catch((error) => res.json({ message: error }));
-});
-
-// Obtener el total de las ventas
-router.get("/totalVentas", async (_req, res) => {
-    await ventas
-        .find()
         .count()
         .sort({ _id: -1 })
         .then((data) => res.json(data))
@@ -98,6 +126,32 @@ router.get("/listarPaginandoCanceladas", async (req, res) => {
 router.get("/totalVentasCanceladas", async (_req, res) => {
     await ventas
         .find({ estado: "false" })
+        .count()
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener las ventas canceladas
+router.get("/listarPaginando", async (req, res) => {
+    const { pagina, limite } = req.query;
+    //console.log("Pagina ", pagina , " Limite ", limite)
+
+    const skip = (pagina - 1) * limite;
+
+    await ventas
+        .find()
+        .sort({ _id: -1 })
+        .skip(skip)
+        .limit(limite)
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener el total de las ventas
+router.get("/totalVentas", async (_req, res) => {
+    await ventas
+        .find()
         .count()
         .sort({ _id: -1 })
         .then((data) => res.json(data))
