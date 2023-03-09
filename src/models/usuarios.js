@@ -10,6 +10,7 @@ const usuarios = new Schema({
     usuario: { type: String },
     admin: { type: String },
     tipo: { type: String },
+    rol: { type: String },
     correo: { type: String },
     password: { type: String },
     foto: { type: String },

@@ -201,7 +201,7 @@ router.put("/deshabilitar/:id", async (req, res) => {
 // Actualizar datos del usuario
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { nombre, usuario, password, admin } = req.body;
+    const { nombre, usuario, password, admin, rol } = req.body;
 
      // Inicia validacion para no registrar usuarios con el mismo correo electronico
      const busqueda = await usuarios.findOne({ usuario });
@@ -210,7 +210,7 @@ router.put("/actualizar/:id", async (req, res) => {
         return res.status(401).json({ mensaje: "Usuario ya registrado" });
     } else {
         await usuarios
-            .updateOne({ _id: id }, { $set: { nombre, usuario, password, admin } })
+            .updateOne({ _id: id }, { $set: { nombre, usuario, password, admin, rol } })
             .then((data) => res.status(200).json({ mensaje: "Datos del usuario actualizados" }))
             .catch((error) => res.json({ message: error }));
     }
