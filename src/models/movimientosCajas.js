@@ -7,8 +7,11 @@ const movimientosCajas = new Schema({
     idCajero: { type: String },
     cajero: { type: String },
     movimiento: { type: String },
-    pago: {type: String},
+    pago: { type: String },
     monto: { type: String },
+    movimientosAcumulados: { type: Array, default: [] },
+    dineroAcumulado: { type: String },
+    observaciones: { type: String },
     estado: { type: String },
 }, {
     timestamps: true
