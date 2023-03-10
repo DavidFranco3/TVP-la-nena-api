@@ -419,16 +419,14 @@ router.put("/cancelar/:id", async (req, res) => {
 
 // Obtener el numero de la pedido actual
 router.get("/obtenNoTiquet", async (req, res) => {
-    const registroPedidos = await pedidosClientes.find().count();
-    if (registroPedidos === 0) {
-        res.status(200).json({ noTiquet: 1 });
+    const registroPedido = await pedidosClientes.find().count();
+    if (registroPedido === 0) {
+        res.status(200).json({ noTiquet: "PD-1" })
     } else {
-        const [ultimoPedido] = await pedidosClientes
-            .find({})
-            .sort({ numeroTiquet: -1 })
-            .limit(1);
-        const tempTiquet = parseInt(ultimoPedido.numeroTiquet) + 1;
-        res.status(200).json({ noTiquet: tempTiquet });
+        const ultimoPedido = await pedidosClientes.findOne().sort({ _id: -1 });
+        const tempFolio1 = ultimoPedido.folio.split("-")
+        const tempFolio = parseInt(tempFolio1[1]) + 1;
+        res.status(200).json({ noTiquet: "PD-" + tempFolio.toString().padStart(1, 0) })
     }
 });
 

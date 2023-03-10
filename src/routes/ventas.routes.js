@@ -177,7 +177,7 @@ router.get("/listarPaginandoDia", async (req, res) => {
 // Obtener las ventas
 router.get("/listarVentasDia", async (req, res) => {
     const { dia } = req.query;
-    
+
     await ventas
         .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T23:59:59.999Z') } })
         .sort({ _id: -1 })
@@ -188,9 +188,9 @@ router.get("/listarVentasDia", async (req, res) => {
 // Obtener las ventas
 router.get("/listarVentasMes", async (req, res) => {
     const { mes } = req.query;
-    
+
     await ventas
-        .find({ estado: "true", agrupar: mes})
+        .find({ estado: "true", agrupar: mes })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
@@ -387,6 +387,30 @@ router.get("/listarDetallesProductosVendidosDia", async (req, res) => {
                     dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Venta completada" : "Venta cancelada", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago, totalVenta: data[indexPrincipal].total })
                 })
 
+            })
+            res.status(200).json(dataTemp)
+        })
+        .catch((error) => res.json({ message: error }));
+});
+
+// Listar solo los productos vendidos en el día solicitado
+router.get("/listarConsumoIngredientes", async (req, res) => {
+    const { dia } = req.query;
+    //console.log(dia)
+    await ventas
+        .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T23:59:59.999Z') } })
+        .sort({ _id: -1 })
+        .then((data) => {
+            let dataTemp = []
+            // console.log(data)
+            map(data, (datos, indexPrincipal) => {
+
+                map(datos.productos, (producto, indexProductos) => {
+                    map(producto.ingredientes, (ingrediente, indexIngrediente) => {
+                        const { id, nombre, cantidad, um } = ingrediente;
+                        dataTemp.push({ id: id, nombre: nombre, cantidad: cantidad, um: um, fecha: data[indexPrincipal].createdAt })
+                    })
+                })
             })
             res.status(200).json(dataTemp)
         })
