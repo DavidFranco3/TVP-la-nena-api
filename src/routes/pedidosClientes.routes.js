@@ -424,9 +424,9 @@ router.get("/obtenNoTiquet", async (req, res) => {
         res.status(200).json({ noTiquet: "PD-1" })
     } else {
         const ultimoPedido = await pedidosClientes.findOne().sort({ _id: -1 });
-        const tempFolio1 = ultimoPedido.folio.split("-")
-        const tempFolio = parseInt(tempFolio1[1]) + 1;
-        res.status(200).json({ noTiquet: "PD-" + tempFolio.toString().padStart(1, 0) })
+        const tempTicket1 = ultimoPedido.numeroTiquet.split("-")
+        const tempTicket = parseInt(tempTicket1[1]) + 1;
+        res.status(200).json({ noTiquet: "PD-" + tempTicket.toString().padStart(1, 0) })
     }
 });
 
