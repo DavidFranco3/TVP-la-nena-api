@@ -470,18 +470,15 @@ router.put("/cancelar/:id", async (req, res) => {
 
 // Obtener el numero de la venta actual
 router.get("/obtenNoTiquet", async (req, res) => {
-    const registroVentas = await ventas.find().count();
-    if (registroVentas === 0) {
-        res.status(200).json({ noTiquet: 1 });
+    const ventasTotales = await ventas.findOne().sort({ _id: -1 });
+    // console.log(ventasTotales)
+    if (ventasTotales.numeroTiquet !== undefined) {
+        res.status(200).json({ noTiquet: ventasTotales.numeroTiquet })
     } else {
-        const [ultimaVenta] = await ventas
-            .find({})
-            .sort({ numeroTiquet: -1 })
-            .limit(1);
-        const tempTiquet = parseInt(ultimaVenta.numeroTiquet) + 1;
-        res.status(200).json({ noTiquet: tempTiquet });
+        res.status(200).json({ noTiquet: "0" })
     }
 });
+
 
 module.exports = router;
 
