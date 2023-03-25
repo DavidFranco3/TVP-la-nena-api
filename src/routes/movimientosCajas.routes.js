@@ -144,9 +144,9 @@ router.put("/cancelar/:id", async (req, res) => {
 // Actualizar datos de la categoria
 router.put("/actualizar/:id", async (req, res) => {
     const { id } = req.params;
-    const { idCajero, cajero, saldo } = req.body;
+    const { idCajero, cajero, saldo, concepto } = req.body;
     await movimientosCajas
-        .updateOne({ _id: id }, { $set: { idCajero, cajero, saldo } })
+        .updateOne({ _id: id }, { $set: { idCajero, cajero, saldo, concepto } })
         .then((data) => res.status(200).json({ mensaje: "Datos de la caja actualizados" }))
         .catch((error) => res.json({ message: error }));
 });
