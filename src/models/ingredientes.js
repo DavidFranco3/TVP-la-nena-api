@@ -10,6 +10,8 @@ const ingredientes = new Schema({
   umProduccion: { type: String },
   costoProduccion: { type: String },
   cantidadPiezas: { type: String },
+  movimientos: { type: Array, default: [] },
+  cantidad: { type: String },
   negocio: { type: String },
   imagen: { type: String },
   estado: { type: String },
