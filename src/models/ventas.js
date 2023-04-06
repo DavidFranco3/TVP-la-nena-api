@@ -15,6 +15,7 @@ const ventas = new Schema({
   subtotal: { type: String },
   tipoPedido: { type: String },
   hacerPedido: { type: String },
+  pagado: { type: String },
   total: { type: String },
   iva: { type: String },
   comision: { type: String },

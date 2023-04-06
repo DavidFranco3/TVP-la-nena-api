@@ -479,6 +479,15 @@ router.get("/obtenNoTiquet", async (req, res) => {
     }
 });
 
+// Actualizar datos del producto
+router.put("/actualizar/:id", async (req, res) => {
+    const { id } = req.params;
+    const { tipoPago, efectivo, cambio, subtotal, total, pagado, iva, comision } = req.body;
+    await ventas
+        .updateOne({ _id: id }, { $set: { tipoPago, efectivo, cambio, subtotal, total, pagado, iva, comision } })
+        .then((data) => res.status(200).json({ mensaje: "Datos del producto actualizados" }))
+        .catch((error) => res.json({ message: error }));
+});
 
 module.exports = router;
 
