@@ -106,6 +106,33 @@ router.get("/totalVentasActivas", async (_req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener las ventas activas con paginacion
+router.get("/listarPaginandoActivasTicket", async (req, res) => {
+    const { pagina, limite, numeroTiquet } = req.query;
+    //console.log("Pagina ", pagina , " Limite ", limite)
+
+    const skip = (pagina - 1) * limite;
+
+    await ventas
+        .find({ numeroTiquet, estado: "true" })
+        .sort({ _id: -1 })
+        .skip(skip)
+        .limit(limite)
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener el total de las ventas activas
+router.get("/totalVentasActivasTicket", async (req, res) => {
+    const { numeroTiquet } = req.query;
+    await ventas
+        .find({ numeroTiquet, estado: "true" })
+        .count()
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Obtener las ventas canceladas con paginacion
 router.get("/listarPaginandoCanceladas", async (req, res) => {
     const { pagina, limite } = req.query;
@@ -126,6 +153,33 @@ router.get("/listarPaginandoCanceladas", async (req, res) => {
 router.get("/totalVentasCanceladas", async (_req, res) => {
     await ventas
         .find({ estado: "false" })
+        .count()
+        .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener las ventas canceladas con paginacion
+router.get("/listarPaginandoCanceladasTicket", async (req, res) => {
+    const { pagina, limite, numeroTiquet } = req.query;
+    //console.log("Pagina ", pagina , " Limite ", limite)
+
+    const skip = (pagina - 1) * limite;
+
+    await ventas
+        .find({ numeroTiquet, estado: "false" })
+        .sort({ _id: -1 })
+        .skip(skip)
+        .limit(limite)
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener el total de las ventas canceladas
+router.get("/totalVentasCanceladasTicket", async (req, res) => {
+    const { numeroTiquet } = req.query;
+    await ventas
+        .find({ numeroTiquet, estado: "false" })
         .count()
         .sort({ _id: -1 })
         .then((data) => res.json(data))
