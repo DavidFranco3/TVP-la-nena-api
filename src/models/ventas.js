@@ -5,6 +5,8 @@ const { Schema } = mongoose;
 const ventas = new Schema({
   numeroTiquet: { type: String },
   cliente: { type: String },
+  mesa: { type: String },
+  tiquetVenta: { type: String },
   usuario: { type: String },
   productos: { type: Array, default: [] },
   estado: { type: String },

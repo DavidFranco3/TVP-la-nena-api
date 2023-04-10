@@ -503,6 +503,15 @@ router.get("/obtener/:id", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Obtener una venta en especifico
+router.get("/obtenerVentaAsociada/:tiquetVenta", async (req, res) => {
+    const { tiquetVenta } = req.params;
+    await ventas
+        .find({ tiquetVenta })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Borrar una venta
 router.delete("/eliminar/:id", async (req, res) => {
     const { id } = req.params;
