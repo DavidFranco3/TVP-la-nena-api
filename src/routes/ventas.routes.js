@@ -494,6 +494,29 @@ router.get("/listarDetallesProductosVendidosMes", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Listar solo los productos vendidos en el mes solicitado
+router.get("/listarProductosAdicionales", async (req, res) => {
+    const { numeroTiquet } = req.query;
+    //console.log(dia)
+    await ventas
+        .find({ estado: "true", numeroTiquet: numeroTiquet })
+        .sort({ _id: -1 })
+        .then((data) => {
+            let dataTemp = []
+            // console.log(data)
+            map(data, (datos, indexPrincipal) => {
+
+                map(datos.productos, (producto, index) => {
+                    const { nombre, precio } = producto;
+                    dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Venta completada" : "Venta cancelada", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago, totalVenta: data[indexPrincipal].total })
+                })
+
+            })
+            res.status(200).json(dataTemp)
+        })
+        .catch((error) => res.json({ message: error }));
+});
+
 // Obtener una venta en especifico
 router.get("/obtener/:id", async (req, res) => {
     const { id } = req.params;
