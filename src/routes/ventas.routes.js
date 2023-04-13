@@ -554,6 +554,16 @@ router.put("/cancelar/:id", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
+// Cambiar el estado de una venta
+router.put("/cambiarIdentificador/:id", async (req, res) => {
+    const { id } = req.params;
+    const { atendido } = req.body;
+    await ventas
+        .updateOne({ _id: id }, { $set: { atendido } })
+        .then((data) => res.status(200).json({ mensaje: "Venta atendida" }))
+        .catch((error) => res.json({ message: error }));
+});
+
 // Obtener el numero de la venta actual
 router.get("/obtenNoTiquet", async (req, res) => {
     const ventasTotales = await ventas.findOne().sort({ _id: -1 });

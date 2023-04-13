@@ -21,6 +21,7 @@ const ventas = new Schema({
   pagado: { type: String },
   total: { type: String },
   iva: { type: String },
+  atendido: { type: String },
   comision: { type: String },
   agrupar: { type: String },
 }, {
