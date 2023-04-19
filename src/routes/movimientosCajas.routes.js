@@ -19,10 +19,19 @@ router.post("/registro", async (req, res) => {
 // Obtener los movimientos de cajas
 router.get("/listar", async (req, res) => {
     const { idCaja } = req.query;
-    
+
     await movimientosCajas
-        .find({ estado: "true",  idCaja})
+        .find({ estado: "true", idCaja })
         .sort({ _id: -1 })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener los movimientos de cajas
+router.get("/ObtenerUltimo", async (req, res) => {
+    await movimientosCajas
+        .findOne({ estado: "true" })
+        .sort({ $natural: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
@@ -117,7 +126,7 @@ router.get("/obtener/:id", async (req, res) => {
 router.get("/obtenerPorCaja/:idCaja", async (req, res) => {
     const { idCaja } = req.params;
     await movimientosCajas
-        .find({idCaja})
+        .find({ idCaja })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
