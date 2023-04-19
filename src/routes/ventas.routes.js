@@ -263,6 +263,8 @@ router.get("/listarTotalVentasDia", async (req, res) => {
             let extras_vendidos = 0;
             let sandwiches_vendidos = 0;
             let desayunos_vendidos = 0;
+            let hamburguesas_vendidas = 0;
+            let cafeteria_vendida = 0;
             let envios_vendidos = 0;
             let efectivo = 0;
             let tarjeta = 0;
@@ -289,6 +291,12 @@ router.get("/listarTotalVentasDia", async (req, res) => {
                     if (producto.categoria === "6262ee08e1383d22020db083") {
                         envios_vendidos += 1;
                     }
+                    if (producto.categoria === "64273bc6804705a24d7fb813") {
+                        hamburguesas_vendidas += 1;
+                    }
+                    if (producto.categoria === "64273eb4dad2341c0af5fca4") {
+                        cafeteria_vendida += 1;
+                    }
                 })
 
                 // Sumatoria de ventas realizadas con efectivo
@@ -310,7 +318,7 @@ router.get("/listarTotalVentasDia", async (req, res) => {
                 }
 
             })
-            res.status(200).json({ efectivo: efectivo, tarjeta: tarjeta, transferencia: transferencia, tortasVendidas: productos_vendidos, bebidasVendidas: bebidas_vendidas, extrasVendidos: extras_vendidos, sandwichesVendidos: sandwiches_vendidos, desayunosVendidos: desayunos_vendidos, enviosVendidos: envios_vendidos })
+            res.status(200).json({ efectivo: efectivo, tarjeta: tarjeta, transferencia: transferencia, tortasVendidas: productos_vendidos, bebidasVendidas: bebidas_vendidas, extrasVendidos: extras_vendidos, sandwichesVendidos: sandwiches_vendidos, desayunosVendidos: desayunos_vendidos, hamburguesasVendidas: hamburguesas_vendidas, cafeteriaVendida: cafeteria_vendida, enviosVendidos: envios_vendidos })
         })
         .catch((error) => res.json({ message: error }));
 });
@@ -328,6 +336,8 @@ router.get("/listarTotalVentasMes", async (req, res) => {
             let extras_vendidos = 0;
             let sandwiches_vendidos = 0;
             let desayunos_vendidos = 0;
+            let hamburguesas_vendidas = 0;
+            let cafeteria_vendida = 0;
             let envios_vendidos = 0;
             let efectivo = 0;
             let tarjeta = 0;
@@ -354,6 +364,12 @@ router.get("/listarTotalVentasMes", async (req, res) => {
                     if (producto.categoria === "6262ee08e1383d22020db083") {
                         envios_vendidos += 1;
                     }
+                    if (producto.categoria === "64273bc6804705a24d7fb813") {
+                        hamburguesas_vendidas += 1;
+                    }
+                    if (producto.categoria === "64273eb4dad2341c0af5fca4") {
+                        cafeteria_vendida += 1;
+                    }
                 })
 
                 // Sumatoria de ventas realizadas con efectivo
@@ -375,7 +391,7 @@ router.get("/listarTotalVentasMes", async (req, res) => {
                 }
 
             })
-            res.status(200).json({ efectivo: efectivo, tarjeta: tarjeta, transferencia: transferencia, tortasVendidas: productos_vendidos, bebidasVendidas: bebidas_vendidas, extrasVendidos: extras_vendidos, sandwichesVendidos: sandwiches_vendidos, desayunosVendidos: desayunos_vendidos, enviosVendidos: envios_vendidos })
+            res.status(200).json({ efectivo: efectivo, tarjeta: tarjeta, transferencia: transferencia, tortasVendidas: productos_vendidos, bebidasVendidas: bebidas_vendidas, extrasVendidos: extras_vendidos, sandwichesVendidos: sandwiches_vendidos, desayunosVendidos: desayunos_vendidos, hamburguesasVendidas: hamburguesas_vendidas, cafeteriaVendida: cafeteria_vendida, enviosVendidos: envios_vendidos })
         })
         .catch((error) => res.json({ message: error }));
 });
