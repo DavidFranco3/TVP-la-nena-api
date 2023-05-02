@@ -241,10 +241,10 @@ router.get("/listarVentasDia", async (req, res) => {
 
 // Obtener las ventas
 router.get("/listarVentasMes", async (req, res) => {
-    const { mes } = req.query;
+    const { mes, año } = req.query;
 
     await ventas
-        .find({ estado: "true", agrupar: mes })
+        .find({ estado: "true", agrupar: mes, año: año })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
@@ -325,9 +325,9 @@ router.get("/listarTotalVentasDia", async (req, res) => {
 
 // Obtener los totales segun el mes 
 router.get("/listarTotalVentasMes", async (req, res) => {
-    const { mes } = req.query;
+    const { mes, año } = req.query;
     await ventas
-        .find({ estado: "true", agrupar: mes })
+        .find({ estado: "true", agrupar: mes, año: año })
         .sort({ _id: -1 })
         .then((data) => {
             //console.log(data)
@@ -412,13 +412,15 @@ router.get("/listarDetallesVentasMes", async (req, res) => {
 
 // Obtener las ventas con paginacion segun el mes
 router.get("/listarPaginandoMes", async (req, res) => {
-    const { pagina, limite, mes } = req.query;
+    const { pagina, limite, mes, año } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
+
+    console.log(año)
 
     const skip = (pagina - 1) * limite;
 
     await ventas
-        .find({ estado: "true", agrupar: mes })
+        .find({ estado: "true", agrupar: mes, año: año })
         .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
@@ -489,10 +491,10 @@ router.get("/listarConsumoIngredientes", async (req, res) => {
 
 // Listar solo los productos vendidos en el mes solicitado
 router.get("/listarDetallesProductosVendidosMes", async (req, res) => {
-    const { mes } = req.query;
+    const { mes, año } = req.query;
     //console.log(dia)
     await ventas
-        .find({ estado: "true", agrupar: mes })
+        .find({ estado: "true", agrupar: mes, año: año })
         .sort({ _id: -1 })
         .then((data) => {
             let dataTemp = []
