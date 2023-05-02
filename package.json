@@ -15,8 +15,8 @@
   "author": "José David Ayala Franco",
   "license": "ISC",
   "dependencies": {
-    "@sentry/node": "7.49.0",
-    "@sentry/tracing": "7.49.0",
+    "@sentry/node": "7.50.0",
+    "@sentry/tracing": "7.50.0",
     "base64-stream": "1.0.0",
     "cors": "2.8.5",
     "express": "4.18.2",
@@ -24,7 +24,7 @@
     "jwt-decode": "3.1.2",
     "lodash": "4.17.21",
     "moment": "2.29.4",
-    "mongoose": "7.0.5",
+    "mongoose": "7.1.0",
     "mongoose-paginate-v2": "1.7.1",
     "morgan": "1.10.0",
     "nodemailer": "6.9.1",
@@ -40,7 +40,7 @@
     "eslint-plugin-promise": "6.1.1",
     "eslint-plugin-standard": "5.0.0",
     "husky": "=8",
-    "lint-staged": ">=13.2.1",
+    "lint-staged": ">=13.2.2",
     "nodemon": "2.0.22",
     "prettier": "2.8.8",
     "standard": "17.0.0"

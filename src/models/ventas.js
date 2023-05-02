@@ -24,6 +24,7 @@ const ventas = new Schema({
   atendido: { type: String },
   comision: { type: String },
   agrupar: { type: String },
+  año: { type: String }
 }, {
   timestamps: true
 });
