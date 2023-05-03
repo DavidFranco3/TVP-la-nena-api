@@ -240,11 +240,11 @@ router.get("/listarVentasDia", async (req, res) => {
 });
 
 // Obtener las ventas
-router.get("/listarVentasMes", async (req, res) => {
-    const { mes, año } = req.query;
+router.get("/listarVentasSemana", async (req, res) => {
+    const { semana, año } = req.query;
 
     await ventas
-        .find({ estado: "true", agrupar: mes, año: año })
+        .find({ estado: "true", semana, semana, año: año })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
@@ -323,11 +323,11 @@ router.get("/listarTotalVentasDia", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener los totales segun el mes 
-router.get("/listarTotalVentasMes", async (req, res) => {
-    const { mes, año } = req.query;
+// Obtener los totales segun el Semana
+router.get("/listarTotalVentasSemana", async (req, res) => {
+    const { semana, año } = req.query;
     await ventas
-        .find({ estado: "true", agrupar: mes, año: año })
+        .find({ estado: "true", semana: semana, año: año })
         .sort({ _id: -1 })
         .then((data) => {
             //console.log(data)
@@ -396,12 +396,12 @@ router.get("/listarTotalVentasMes", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-//Obtener los detalles de las ventas del mes
-router.get("/listarDetallesVentasMes", async (req, res) => {
-    const { dia } = req.query;
+//Obtener los detalles de las ventas de la semana
+router.get("/listarDetallesVentasSemana", async (req, res) => {
+    const { semana } = req.query;
     //console.log(dia)
     await ventas
-        .find({ estado: "true", agrupar: dia })
+        .find({ estado: "true", semana: semana })
         .count()
         .sort({ _id: -1 })
         .then((data) => {
@@ -410,9 +410,9 @@ router.get("/listarDetallesVentasMes", async (req, res) => {
         .catch((error) => res.json({ message: error }));
 });
 
-// Obtener las ventas con paginacion segun el mes
-router.get("/listarPaginandoMes", async (req, res) => {
-    const { pagina, limite, mes, año } = req.query;
+// Obtener las ventas con paginacion segun el semana
+router.get("/listarPaginandoSemana", async (req, res) => {
+    const { pagina, limite, semana, año } = req.query;
     //console.log("Pagina ", pagina , " Limite ", limite)
 
     console.log(año)
@@ -420,7 +420,7 @@ router.get("/listarPaginandoMes", async (req, res) => {
     const skip = (pagina - 1) * limite;
 
     await ventas
-        .find({ estado: "true", agrupar: mes, año: año })
+        .find({ estado: "true", semana: semana, año: año })
         .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
@@ -490,11 +490,34 @@ router.get("/listarConsumoIngredientes", async (req, res) => {
 });
 
 // Listar solo los productos vendidos en el mes solicitado
-router.get("/listarDetallesProductosVendidosMes", async (req, res) => {
-    const { mes, año } = req.query;
+router.get("/listarDetallesProductosVendidosSemana", async (req, res) => {
+    const { semana, año } = req.query;
     //console.log(dia)
     await ventas
-        .find({ estado: "true", agrupar: mes, año: año })
+        .find({ estado: "true", semana: semana, año: año })
+        .sort({ _id: -1 })
+        .then((data) => {
+            let dataTemp = []
+            // console.log(data)
+            map(data, (datos, indexPrincipal) => {
+
+                map(datos.productos, (producto, index) => {
+                    const { nombre, precio } = producto;
+                    dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Venta completada" : "Venta cancelada", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago, totalVenta: data[indexPrincipal].total })
+                })
+
+            })
+            res.status(200).json(dataTemp)
+        })
+        .catch((error) => res.json({ message: error }));
+});
+
+// Listar solo los productos vendidos en el semana solicitada
+router.get("/listarDetallesProductosVendidosSemana", async (req, res) => {
+    const { semana, año } = req.query;
+    //console.log(dia)
+    await ventas
+        .find({ estado: "true", semana: semana, año: año })
         .sort({ _id: -1 })
         .then((data) => {
             let dataTemp = []
