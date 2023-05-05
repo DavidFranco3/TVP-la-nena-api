@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 // Credenciales para conexion local a la BD
-const URI = "mongodb://127.0.0.1/TPV-LA-NENA-PRUEBAS";
+// const URI = "mongodb://127.0.0.1/TPV-LA-NENA-PRUEBAS";
 
 // Credenciales para conexion a Mongo Atlas
-// const URI = "mongodb+srv://tpv-la-nena:74CDFTgpyW5783eh@cluster0.dsbmu.mongodb.net/TPV-LA-NENA-PRUEBAS"; // tpv test
+const URI = "mongodb+srv://tpv-la-nena:74CDFTgpyW5783eh@cluster0.dsbmu.mongodb.net/TPV-LA-NENA-PRUEBAS"; // tpv test
 
 mongoose.Promise = global.Promise;
 
