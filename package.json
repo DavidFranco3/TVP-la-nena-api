@@ -15,8 +15,8 @@
   "author": "José David Ayala Franco",
   "license": "ISC",
   "dependencies": {
-    "@sentry/node": "7.50.0",
-    "@sentry/tracing": "7.50.0",
+    "@sentry/node": "7.51.0",
+    "@sentry/tracing": "7.51.0",
     "base64-stream": "1.0.0",
     "cors": "2.8.5",
     "express": "4.18.2",
