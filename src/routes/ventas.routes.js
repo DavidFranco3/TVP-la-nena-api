@@ -268,6 +268,7 @@ router.get("/listarTotalVentasDia", async (req, res) => {
             let envios_vendidos = 0;
             let efectivo = 0;
             let tarjeta = 0;
+            let pendiente = 0;
             let transferencia = 0;
             map(data, (totales, indexPrincipal) => {
 
@@ -317,8 +318,14 @@ router.get("/listarTotalVentasDia", async (req, res) => {
                     // console.log(totales.total)
                 }
 
+                // Sumatoria de ventas realizadas con transferencia
+                if (totales.tipoPago === "") {
+                    pendiente += parseFloat(totales.total);
+                    // console.log(totales.total)
+                }
+
             })
-            res.status(200).json({ efectivo: efectivo, tarjeta: tarjeta, transferencia: transferencia, tortasVendidas: productos_vendidos, bebidasVendidas: bebidas_vendidas, extrasVendidos: extras_vendidos, sandwichesVendidos: sandwiches_vendidos, desayunosVendidos: desayunos_vendidos, hamburguesasVendidas: hamburguesas_vendidas, cafeteriaVendida: cafeteria_vendida, enviosVendidos: envios_vendidos })
+            res.status(200).json({ efectivo: efectivo, tarjeta: tarjeta, transferencia: transferencia, pendiente: pendiente, tortasVendidas: productos_vendidos, bebidasVendidas: bebidas_vendidas, extrasVendidos: extras_vendidos, sandwichesVendidos: sandwiches_vendidos, desayunosVendidos: desayunos_vendidos, hamburguesasVendidas: hamburguesas_vendidas, cafeteriaVendida: cafeteria_vendida, enviosVendidos: envios_vendidos })
         })
         .catch((error) => res.json({ message: error }));
 });
@@ -341,6 +348,7 @@ router.get("/listarTotalVentasSemana", async (req, res) => {
             let envios_vendidos = 0;
             let efectivo = 0;
             let tarjeta = 0;
+            let pendiente = 0;
             let transferencia = 0;
             map(data, (totales, indexPrincipal) => {
 
@@ -390,8 +398,94 @@ router.get("/listarTotalVentasSemana", async (req, res) => {
                     // console.log(totales.total)
                 }
 
+                 // Sumatoria de ventas realizadas con transferencia
+                 if (totales.tipoPago === "") {
+                    pendiente += parseFloat(totales.total);
+                    // console.log(totales.total)
+                }
+
             })
-            res.status(200).json({ efectivo: efectivo, tarjeta: tarjeta, transferencia: transferencia, tortasVendidas: productos_vendidos, bebidasVendidas: bebidas_vendidas, extrasVendidos: extras_vendidos, sandwichesVendidos: sandwiches_vendidos, desayunosVendidos: desayunos_vendidos, hamburguesasVendidas: hamburguesas_vendidas, cafeteriaVendida: cafeteria_vendida, enviosVendidos: envios_vendidos })
+            res.status(200).json({ efectivo: efectivo, tarjeta: tarjeta, transferencia: transferencia, pendiente: pendiente, tortasVendidas: productos_vendidos, bebidasVendidas: bebidas_vendidas, extrasVendidos: extras_vendidos, sandwichesVendidos: sandwiches_vendidos, desayunosVendidos: desayunos_vendidos, hamburguesasVendidas: hamburguesas_vendidas, cafeteriaVendida: cafeteria_vendida, enviosVendidos: envios_vendidos })
+        })
+        .catch((error) => res.json({ message: error }));
+});
+
+// Obtener los totales segun el Semana
+router.get("/listarTotalVentasMes", async (req, res) => {
+    const { mes, año } = req.query;
+    await ventas
+        .find({ estado: "true", agrupar: mes, año: año })
+        .sort({ _id: -1 })
+        .then((data) => {
+            //console.log(data)
+            let productos_vendidos = 0;
+            let bebidas_vendidas = 0;
+            let extras_vendidos = 0;
+            let sandwiches_vendidos = 0;
+            let desayunos_vendidos = 0;
+            let hamburguesas_vendidas = 0;
+            let cafeteria_vendida = 0;
+            let envios_vendidos = 0;
+            let efectivo = 0;
+            let tarjeta = 0;
+            let pendiente = 0;
+            let transferencia = 0;
+            map(data, (totales, indexPrincipal) => {
+
+                // Sumatoria de artículos vendidos
+                map(totales.productos, (producto, index) => {
+                    if (producto.categoria === "623b7f2fe94614410f810a47" || producto.categoria === "623b7f24e94614410f810a44" || producto.categoria === "623b7f1be94614410f810a41" || producto.categoria === "623b7f0be94614410f810a3e") {
+                        productos_vendidos += 1;
+                    }
+                    if (producto.categoria === "62397cbaf67f5c7c54a0560b") {
+                        bebidas_vendidas += 1;
+                    }
+                    if (producto.categoria === "625d8b798bb242960f22ae56") {
+                        extras_vendidos += 1;
+                    }
+                    if (producto.categoria === "627a86119d083324e156bda8") {
+                        sandwiches_vendidos += 1;
+                    }
+                    if (producto.categoria === "631b541c05ab0cb5a3c1dbd6") {
+                        desayunos_vendidos += 1;
+                    }
+                    if (producto.categoria === "6262ee08e1383d22020db083") {
+                        envios_vendidos += 1;
+                    }
+                    if (producto.categoria === "64273bc6804705a24d7fb813") {
+                        hamburguesas_vendidas += 1;
+                    }
+                    if (producto.categoria === "64273eb4dad2341c0af5fca4") {
+                        cafeteria_vendida += 1;
+                    }
+                })
+
+                // Sumatoria de ventas realizadas con efectivo
+                if (totales.tipoPago === "Efectivo") {
+                    efectivo += parseFloat(totales.total);
+                    // console.log(totales.total)
+                }
+
+                // Sumatoria de ventas realizadas con tarjeta
+                if (totales.tipoPago === "Tarjeta") {
+                    tarjeta += parseFloat(totales.total);
+                    // console.log(totales.total)
+                }
+
+                // Sumatoria de ventas realizadas con transferencia
+                if (totales.tipoPago === "Transferencia") {
+                    transferencia += parseFloat(totales.total);
+                    // console.log(totales.total)
+                }
+
+                 // Sumatoria de ventas realizadas con transferencia
+                 if (totales.tipoPago === "") {
+                    pendiente += parseFloat(totales.total);
+                    // console.log(totales.total)
+                }
+
+            })
+            res.status(200).json({ efectivo: efectivo, tarjeta: tarjeta, transferencia: transferencia, pendiente: pendiente, tortasVendidas: productos_vendidos, bebidasVendidas: bebidas_vendidas, extrasVendidos: extras_vendidos, sandwichesVendidos: sandwiches_vendidos, desayunosVendidos: desayunos_vendidos, hamburguesasVendidas: hamburguesas_vendidas, cafeteriaVendida: cafeteria_vendida, enviosVendidos: envios_vendidos })
         })
         .catch((error) => res.json({ message: error }));
 });
@@ -456,7 +550,7 @@ router.get("/listarDetallesProductosVendidosDia", async (req, res) => {
 
                 map(datos.productos, (producto, index) => {
                     const { nombre, precio } = producto;
-                    dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Venta completada" : "Venta cancelada", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago, totalVenta: data[indexPrincipal].total })
+                    dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Venta completada" : "Venta cancelada", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago == "" ? "Pendiente" : data[indexPrincipal].tipoPago, totalVenta: data[indexPrincipal].total })
                 })
 
             })
@@ -490,11 +584,11 @@ router.get("/listarConsumoIngredientes", async (req, res) => {
 });
 
 // Listar solo los productos vendidos en el mes solicitado
-router.get("/listarDetallesProductosVendidosSemana", async (req, res) => {
-    const { semana, año } = req.query;
+router.get("/listarDetallesProductosVendidosMes", async (req, res) => {
+    const { mes, año } = req.query;
     //console.log(dia)
     await ventas
-        .find({ estado: "true", semana: semana, año: año })
+        .find({ estado: "true", agrupar: mes, año: año })
         .sort({ _id: -1 })
         .then((data) => {
             let dataTemp = []
@@ -503,7 +597,7 @@ router.get("/listarDetallesProductosVendidosSemana", async (req, res) => {
 
                 map(datos.productos, (producto, index) => {
                     const { nombre, precio } = producto;
-                    dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Venta completada" : "Venta cancelada", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago, totalVenta: data[indexPrincipal].total })
+                    dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Venta completada" : "Venta cancelada", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago == "" ? "Pendiente" : data[indexPrincipal].tipoPago, totalVenta: data[indexPrincipal].total })
                 })
 
             })
