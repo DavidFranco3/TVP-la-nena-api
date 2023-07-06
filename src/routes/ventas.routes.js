@@ -550,7 +550,7 @@ router.get("/listarDetallesProductosVendidosDia", async (req, res) => {
 
                 map(datos.productos, (producto, index) => {
                     const { nombre, precio } = producto;
-                    dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Venta completada" : "Venta cancelada", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago == "" ? "Pendiente" : data[indexPrincipal].tipoPago, totalVenta: data[indexPrincipal].total })
+                    dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Venta completada" : "Venta cancelada", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago == "" ? "Pendiente" : data[indexPrincipal].tipoPago, tipoPedido: data[indexPrincipal].tipoPedido, hacerPedido: data[indexPrincipal].hacerPedido, totalVenta: data[indexPrincipal].total })
                 })
 
             })
@@ -597,7 +597,7 @@ router.get("/listarDetallesProductosVendidosMes", async (req, res) => {
 
                 map(datos.productos, (producto, index) => {
                     const { nombre, precio } = producto;
-                    dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Venta completada" : "Venta cancelada", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago == "" ? "Pendiente" : data[indexPrincipal].tipoPago, totalVenta: data[indexPrincipal].total })
+                    dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Venta completada" : "Venta cancelada", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago == "" ? "Pendiente" : data[indexPrincipal].tipoPago, tipoPedido: data[indexPrincipal].tipoPedido, hacerPedido: data[indexPrincipal].hacerPedido, totalVenta: data[indexPrincipal].total })
                 })
 
             })
@@ -620,7 +620,7 @@ router.get("/listarDetallesProductosVendidosSemana", async (req, res) => {
 
                 map(datos.productos, (producto, index) => {
                     const { nombre, precio } = producto;
-                    dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Venta completada" : "Venta cancelada", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago, totalVenta: data[indexPrincipal].total })
+                    dataTemp.push({ numeroTiquet: data[indexPrincipal].numeroTiquet, estado: data[indexPrincipal].estado === "true" ? "Venta completada" : "Venta cancelada", cliente: data[indexPrincipal].cliente ? data[indexPrincipal].cliente : "No especificado", nombre: nombre, precio: precio, tipoPago: data[indexPrincipal].tipoPago, tipoPedido: data[indexPrincipal].tipoPedido, hacerPedido: data[indexPrincipal].hacerPedido, totalVenta: data[indexPrincipal].total })
                 })
 
             })
