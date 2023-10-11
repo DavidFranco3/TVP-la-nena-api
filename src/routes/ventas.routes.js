@@ -220,7 +220,7 @@ router.get("/listarPaginandoDia", async (req, res) => {
     const skip = (pagina - 1) * limite;
 
     await ventas
-        .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T23:59:59.999Z') } })
+        .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T22:09:59.999Z') } })
         .sort({ _id: -1 })
         .skip(skip)
         .limit(limite)
@@ -233,7 +233,7 @@ router.get("/listarVentasDia", async (req, res) => {
     const { dia } = req.query;
 
     await ventas
-        .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T23:59:59.999Z') } })
+        .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T22:09:59.999Z') } })
         .sort({ _id: -1 })
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
@@ -254,7 +254,7 @@ router.get("/listarVentasSemana", async (req, res) => {
 router.get("/listarTotalVentasDia", async (req, res) => {
     const { dia } = req.query;
     await ventas
-        .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T23:59:59.999Z') } })
+        .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T22:09:59.999Z') } })
         .sort({ _id: -1 })
         .then((data) => {
             //console.log(data)
@@ -565,7 +565,7 @@ router.get("/listarDetallesVentasDia", async (req, res) => {
     const { dia } = req.query;
     //console.log(dia)
     await ventas
-        .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T23:59:59.999Z') } })
+        .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T22:09:59.999Z') } })
         .count()
         .sort({ _id: -1 })
         .then((data) => {
@@ -579,7 +579,7 @@ router.get("/listarDetallesProductosVendidosDia", async (req, res) => {
     const { dia } = req.query;
     //console.log(dia)
     await ventas
-        .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T23:59:59.999Z') } })
+        .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T22:09:59.999Z') } })
         .sort({ _id: -1 })
         .then((data) => {
             let dataTemp = []
@@ -602,7 +602,7 @@ router.get("/listarConsumoIngredientes", async (req, res) => {
     const { dia } = req.query;
     //console.log(dia)
     await ventas
-        .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T23:59:59.999Z') } })
+        .find({ estado: "true", createdAt: { $gte: new Date(dia + 'T00:00:00.000Z'), $lte: new Date(dia + 'T22:09:59.999Z') } })
         .sort({ _id: -1 })
         .then((data) => {
             let dataTemp = []
