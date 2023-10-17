@@ -27,7 +27,8 @@ const ventas = new Schema({
   comision: { type: String },
   agrupar: { type: String },
   año: { type: String },
-  semana: { type: String }
+  semana: { type: String },
+  fecha: {type: String}
 }, {
   timestamps: true
 });
