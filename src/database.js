@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 
 // Credenciales para conexion a Mongo Atlas
-const URI = "mongodb+srv://tpv-la-nena:74CDFTgpyW5783eh@cluster0.dsbmu.mongodb.net/TPV-LA-NENA-PRUEBAS"; // tpv test
+const URI = "mongodb+srv://tpv-la-nena:74CDFTgpyW5783eh@cluster0.dsbmu.mongodb.net/LA-NENA-TPV"; // tpv test
 
 mongoose.Promise = global.Promise;
 
